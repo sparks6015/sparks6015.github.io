@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <link rel="stylesheet" type="text/css" href="assets/styles/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Abel&family=Amatic+SC:wght@700&family=Heebo:wght@300&family=Karla&family=Merriweather+Sans:wght@800&display=swap" rel="stylesheet">
+
+
+    <title>to Do List</title>
+</head>
+
+<body>
+    <div id="container">
+        <span class="h1"> To Do List </span>
+        <div id="add-todo">
+            <form id="add-todo-form">
+                <input id="todo-text" name="text" type="text" placeholder="ex) CS 198 Project 1"><input id="todo-submit" type="submit" value="Add">
+            </form>
+        </div>
+        <div id="rud-todo">
+            <ul id="todo-list">
+            </ul>
+        </div>
+    </div>
+</body>
+<script>
+    var todoCount = 0;
+
+    window.onload = function () {
+
+        // bind addTodo function to form
+        var form = document.querySelector("form");
+        form.onsubmit = addTodo.bind(form);
+
+        // iterate through todos and attach onclick methods that will perform strikethrough to the texts
+        var ul = document.getElementById("todo-list");
+
+        ul.addEventListener('click', function (e) {
+            if (e.target.tagName === 'LI') {
+                var li = document.getElementById(e.target.id);
+                if (li.innerHTML.includes("<s>")) {
+                    li.innerHTML = li.innerText;
+                } else {
+                    li.innerHTML = `<s>${li.innerText}</s>`;
+                }
+            } else if (e.target.tagName == "S") {
+            }
+        });
+    }
+
+    function toggleText(text) {
+        debugger;
+        return text.includes("<s>") ? unstrikeThrough(text) : strikethrough(text);
+    }
+
+    function strikeThrough(text) {
+        return text
+            .split('')
+            .map(char => char + '\u0336')
+            .join('')
+    }
+
+    function unstrikeThrough(text) {
+        return text.replace(/<s>|<\/s>/, "");
+    }
+
+    function incrementCount() {
+        todoCount += 1;
+    }
+
+    function decrementCount() {
+        todoCount -= 1;
+    }
+
+    function addTodo(event) {
+        event.preventDefault();
+
+        var todoTextNode = document.forms["add-todo-form"][0];
+
+        // get unordered list
+        var ul = document.getElementById("todo-list");
+        // create new list
+        var li = document.createElement("li");
+
+        incrementCount();
+
+        // set list id
+        li.id = todoCount;
+        // set list text
+        li.innerHTML = todoTextNode.value;
+
+        // empty text box
+        todoTextNode.value = "";
+
+        // append newly created LI to UL
+        ul.appendChild(li);
+
+    }
+
+    var form = document.getElementById("add-todo-form");
+    form.onsubmit = addTodo;
+
+
+</script>
+
+</html>
